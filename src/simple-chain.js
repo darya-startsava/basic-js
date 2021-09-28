@@ -1,28 +1,42 @@
 import { NotImplementedError } from '../extensions/index.js';
 
-/**
- * Implement chainMaker object according to task description
- * 
- */
-export default {
-  getLength() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  addLink(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  removeLink(/* position */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  finishChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
-};
+
+
+export default
+    {
+        chain: [],
+        getLength() {
+            return this.chain.length;
+        },
+        addLink(value) {
+            if (value == null) {
+                this.chain.push(`( ${null} )`)
+            } else {
+                this.chain.push(`( ${value} )`);
+            }
+            return this;
+        },
+        removeLink(position) {
+            if (typeof position != 'number' || position <= 0 || position > this.chain.length) {
+                this.chain.length = 0;
+                throw new Error("You can't remove incorrect link!")
+            }
+            if (position-1 < this.chain.length) {
+                while (position-1 < this.chain.length - 1) {
+                    this.chain[position-1] = this.chain[position];
+                    position++;
+                }
+            }
+            this.chain.length = this.chain.length - 1;
+            return this;
+        },
+        reverseChain() {
+            this.chain.reverse();
+            return this;
+        },
+        finishChain() {
+            let a = this.chain.join('~~');
+            this.chain.length = 0;
+            return a;
+        }
+    };
